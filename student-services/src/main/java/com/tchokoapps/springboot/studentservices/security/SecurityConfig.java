@@ -9,15 +9,30 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance()).withUser("user").password("123")
-                .roles("USER").and().withUser("admin").password("123")
+        auth.inMemoryAuthentication()
+                .passwordEncoder(org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance())
+                .withUser("user")
+                .password("123")
+                .roles("USER")
+                .and()
+                .withUser("admin")
+                .password("123")
                 .roles("USER", "ADMIN");
     }
 
     // Authorization : Role -> Access
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and().authorizeRequests().antMatchers("/students/**")
-                .hasRole("USER").antMatchers("/**").hasRole("ADMIN").and()
-                .csrf().disable().headers().frameOptions().disable();
+        http.httpBasic()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/students/**")
+                .hasRole("USER")
+                .antMatchers("/**")
+                .hasRole("ADMIN").and()
+                .csrf()
+                .disable()
+                .headers()
+                .frameOptions()
+                .disable();
     }
 }
